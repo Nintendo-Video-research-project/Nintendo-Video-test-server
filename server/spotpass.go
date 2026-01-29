@@ -1,3 +1,4 @@
+// Server code written by OniOkami666
 package main
 
 import (
@@ -22,3 +23,4 @@ func serve_episode(w http.ResponseWriter, r *http.Request) {
 	vids := "../" + r.URL.Path
 	http.ServeFile(w, r, vids)
 }
+
