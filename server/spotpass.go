@@ -8,7 +8,7 @@ import (
 
 func init_routes(mux *http.ServeMux) { // Initialize the routes in the server when it goes online
 	mux.HandleFunc("/1/49/1/CHECK", Check)
-	mux.HandleFunc("p01/policylist/3/policylist.xml", grab_policyfile)
+	mux.HandleFunc("/p01/policylist/3/policylist.xml", grab_policyfile)
 	mux.HandleFunc("/1/49/1/", serve_episode)
 
 }
