@@ -2,7 +2,7 @@
 <policylist version="1">
     <title id="0004000000063000">
         <task id="ESE_MD1">
-            <url>http://placeholder.com/1/49/ESE_MD1</url>
+            <url>http://pubus-p.est.c.app.nintendowifi.net/1/49/1/ESE_MD1</url>
             <interval>60</interval>
             <retry_interval>3600</retry_interval>
             <priority>1</priority>
