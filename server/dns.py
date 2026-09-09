@@ -11,7 +11,7 @@ domains = {
     "logus-p.est.c.app.nintendowifi.net",
 }
 #Your dns server ip
-dns_server = "10.0.0.49"  
+dns_server = ""  
 
 def dns_request(flow: dns.DNSFlow) -> None:
     q = flow.request.question
