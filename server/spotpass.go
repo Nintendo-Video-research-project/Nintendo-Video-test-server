@@ -10,15 +10,15 @@ import (
 
 func init_routes(mux *http.ServeMux) {
 	mux.HandleFunc("/AC/", handleAutoConnect)
-	mux.HandleFunc("/p01/policylist/3/policylist.xml", grab_policyfile)
-	mux.HandleFunc("/p01/recv/", Boss_Recv)
-	mux.HandleFunc("/LogServer_us_live/Upload", handleLogUpload)
-	mux.HandleFunc("/1/49/1/ESE_MD1", serve_episode)
+	mux.HandleFunc("/nppl/p01/policylist/3/policylist.xml", grab_policyfile)
+	mux.HandleFunc("/npul/p01/recv/", Boss_Recv)
 	mux.HandleFunc("/1/", handleAppRequests)
+	mux.HandleFunc("/logus-p/LogServer_us_live/Upload", handleLogUpload)
+	mux.HandleFunc("/pubus-p/", serve_episode)
 	mux.HandleFunc("/", handleUnknown)
 }
 func handleAppRequests(w http.ResponseWriter, r *http.Request) {
-	
+
 	path := r.URL.Path
 	logRequestDetails("APP-REQ", r)
 
@@ -32,10 +32,10 @@ func handleAppRequests(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func servePolicyList(w http.ResponseWriter, r *http.Request) {
-    r.Header.Del("Proxy-Authorization")
-    w.Header().Set("Content-Type", "application/xml; charset=utf-8")
-    w.WriteHeader(http.StatusOK)
-    http.ServeFile(w, r, "policylist.xml")
+	r.Header.Del("Proxy-Authorization")
+	w.Header().Set("Content-Type", "application/xml; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	http.ServeFile(w, r, "policylist.xml")
 }
 func Check(w http.ResponseWriter, r *http.Request) { // NV sends a CHECK command to here
 	log.Println("Incoming CHECK request!")
@@ -73,39 +73,39 @@ func serve_episode(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "./ESE_MD1")
 }
 func handleLogUpload(w http.ResponseWriter, r *http.Request) {
-    logRequestDetails("LOG-UPLOAD", r)
+	logRequestDetails("LOG-UPLOAD", r)
 
-    w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-    w.Header().Set("X-Organization", "Nintendo")
-    w.Header().Set("Connection", "close")
-    w.WriteHeader(http.StatusOK)
-    w.Write([]byte("OK"))
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Header().Set("X-Organization", "Nintendo")
+	w.Header().Set("Connection", "close")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("OK"))
 }
 func Boss_Recv(w http.ResponseWriter, r *http.Request) {
 	logRequestDetails("BOSS-RECV", r)
 
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-    w.Header().Set("X-Organization", "Nintendo")
-    w.Header().Set("Connection", "close")
-    w.WriteHeader(http.StatusOK)
-    w.Write([]byte("OK"))
+	w.Header().Set("X-Organization", "Nintendo")
+	w.Header().Set("Connection", "close")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("OK"))
 }
 func handleUnknown(w http.ResponseWriter, r *http.Request) {
-    logRequestDetails("CATCH-ALL", r)
-    // Respond 200 OK to CTR Auto-Connect tests hitting "/"
+	logRequestDetails("CATCH-ALL", r)
+	// Respond 200 OK to CTR Auto-Connect tests hitting "/"
 
-    if r.URL.Path == "/" {
-        w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-        w.Header().Set("X-Organization", "Nintendo")
-        w.Header().Set("Connection", "close")
-        w.WriteHeader(http.StatusOK)
-        w.Write([]byte("OK"))
-        return
-    }
-    // Default 404 for unhandled paths
-    w.Header().Set("Content-Type", "text/plain")
-    w.WriteHeader(http.StatusNotFound)
-    w.Write([]byte("404 Not Found"))
+	if r.URL.Path == "/" {
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		w.Header().Set("X-Organization", "Nintendo")
+		w.Header().Set("Connection", "close")
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("OK"))
+		return
+	}
+	// Default 404 for unhandled paths
+	w.Header().Set("Content-Type", "text/plain")
+	w.WriteHeader(http.StatusNotFound)
+	w.Write([]byte("404 Not Found"))
 }
 
 // Shared helper function to log header details
@@ -120,13 +120,13 @@ func logRequestDetails(tag string, r *http.Request) {
 	}
 }
 func handleAutoConnect(w http.ResponseWriter, r *http.Request) {
-    logRequestDetails("CTR-AC", r)
+	logRequestDetails("CTR-AC", r)
 
-    // Standard 3DS response for network checks
-    w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-    w.Header().Set("X-Organization", "Nintendo")
-    w.Header().Set("Connection", "close")
-    w.WriteHeader(http.StatusOK)
+	// Standard 3DS response for network checks
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Header().Set("X-Organization", "Nintendo")
+	w.Header().Set("Connection", "close")
+	w.WriteHeader(http.StatusOK)
 
-    w.Write([]byte("OK"))
+	w.Write([]byte("OK"))
 }
