@@ -344,5 +344,5 @@ spotpassVideoPath:
 
 .align 4
 newSpotpassUrlPattern:
-  .asciiz "https://10.0.0.49%s%s%s"
+  .asciiz "[YOUR_SERVER_URL]%s%s%s"
 .endarea
