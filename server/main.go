@@ -13,7 +13,7 @@ func main() {
 	init_routes(mux)
 
 	log.Println("=== Nintendo 3DS/2DS Emulation Server Active ===")
-	log.Println("Listening on http://10.0.0.49:443 ...")
+	log.Println("Listening on :443 ...")
 
 	cert := "mitmproxy-ca.pem"
 	key := "mitmproxy-ca.pem"
