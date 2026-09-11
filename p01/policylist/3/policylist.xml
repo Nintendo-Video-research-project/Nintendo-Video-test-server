@@ -1,11 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <policylist version="1">
-    <title id="0004000000063000">
+    <title id="000400000004AA00">
         <task id="ESE_MD1">
             <url>http://pubus-p.est.c.app.nintendowifi.net/1/49/1/ESE_MD1</url>
-            <interval>60</interval>
-            <retry_interval>3600</retry_interval>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
             <priority>1</priority>
+            <opt_out>false</opt_out>
+        </task>
+        <task id="ESE_MD2">
+            <url>http://pubus-p.est.c.app.nintendowifi.net/1/49/1/ESE_MD2</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>2</priority>
+            <opt_out>false</opt_out>
+        </task>
+        <task id="ESE_MD3">
+            <url>http://pubus-p.est.c.app.nintendowifi.net/1/49/1/ESE_MD3</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>3</priority>
+            <opt_out>false</opt_out>
+        </task>
+        <task id="ESE_MD4">
+            <url>http://pubus-p.est.c.app.nintendowifi.net/1/49/1/ESE_MD4</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>4</priority>
             <opt_out>false</opt_out>
         </task>
     </title>
