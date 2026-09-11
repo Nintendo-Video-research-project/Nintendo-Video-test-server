@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -12,6 +13,7 @@ func init_routes(mux *http.ServeMux) {
 	mux.HandleFunc("/AC/", handleAutoConnect)
 	mux.HandleFunc("/nppl/p01/policylist/3/policylist.xml", grab_policyfile)
 	mux.HandleFunc("/npul/p01/recv/", Boss_Recv)
+	mux.HandleFunc("/reports", handleReports)
 	mux.HandleFunc("/1/", handleAppRequests)
 	mux.HandleFunc("/logus-p/LogServer_us_live/Upload", handleLogUpload)
 	mux.HandleFunc("/pubus-p/", serve_episode)
@@ -30,6 +32,22 @@ func handleAppRequests(w http.ResponseWriter, r *http.Request) {
 	default:
 		handleUnknown(w, r)
 	}
+}
+func handleReports(w http.ResponseWriter, r *http.Request) {
+	logRequestDetails("REPORTS", r)
+
+	if r.Method != http.MethodPost {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+
+	_, _ = io.Copy(io.Discard, r.Body)
+	defer r.Body.Close()
+
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Header().Set("X-Organization", "Nintendo")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("OK"))
 }
 func servePolicyList(w http.ResponseWriter, r *http.Request) {
 	r.Header.Del("Proxy-Authorization")
