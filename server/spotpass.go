@@ -6,16 +6,20 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
-func init_routes(mux *http.ServeMux) {
+func init_auth_routes(mux *http.ServeMux) {
+	mux.HandleFunc("/check", Check)
 	mux.HandleFunc("/AC/", handleAutoConnect)
-	mux.HandleFunc("/nppl/p01/policylist/3/policylist.xml", grab_policyfile)
-	mux.HandleFunc("/npul/p01/recv/", Boss_Recv)
+	mux.HandleFunc("/p01/policylist/3/", grab_policyfile)
+	mux.HandleFunc("/p01/recv/", Boss_Recv)
 	mux.HandleFunc("/reports", handleReports)
 	mux.HandleFunc("/1/", handleAppRequests)
 	mux.HandleFunc("/logus-p/LogServer_us_live/Upload", handleLogUpload)
+}
+func init_http_routes(mux *http.ServeMux) {
 	mux.HandleFunc("/pubus-p/", serve_episode)
 	mux.HandleFunc("/", handleUnknown)
 }
@@ -25,7 +29,7 @@ func handleAppRequests(w http.ResponseWriter, r *http.Request) {
 	logRequestDetails("APP-REQ", r)
 
 	switch {
-	case strings.HasSuffix(path, "/CHECK"):
+	case strings.HasSuffix(path, "/check"):
 		Check(w, r)
 	case strings.Contains(path, "ESE_MD"):
 		serve_episode(w, r)
@@ -36,16 +40,19 @@ func handleAppRequests(w http.ResponseWriter, r *http.Request) {
 func handleReports(w http.ResponseWriter, r *http.Request) {
 	logRequestDetails("REPORTS", r)
 
-	if r.Method != http.MethodPost {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		return
+	if r.Method == http.MethodPost {
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			log.Printf("[REPORTS ERROR] Failed to read request body: %v", err)
+		} else if len(body) > 0 {
+			log.Printf("[REPORTS] Payload received (%d bytes)", len(body))
+			_ = os.WriteFile(fmt.Sprintf("report_%s.bin", r.Header.Get("X-Boss-Uniqueid")), body, 0644)
+		}
 	}
-
-	_, _ = io.Copy(io.Discard, r.Body)
-	defer r.Body.Close()
 
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("X-Organization", "Nintendo")
+	// w.Header().Set("Connection", "close")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("OK"))
 }
@@ -81,14 +88,43 @@ func grab_policyfile(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(data)
 }
+
+type statusResponseWriter struct {
+	http.ResponseWriter
+	status int
+}
+
 func serve_episode(w http.ResponseWriter, r *http.Request) {
 	logRequestDetails("EPISODE", r)
 
-	w.Header().Set("Content-Type", "application/octet-stream")
-	w.Header().Set("X-Content-Type-Options", "nosniff")
-	w.Header().Set("Connection", "close")
+	sw := &statusResponseWriter{ResponseWriter: w, status: http.StatusOK}
 
-	http.ServeFile(w, r, "./ESE_MD1")
+	lowerPath := strings.ToLower(r.URL.Path)
+	if strings.Contains(lowerPath, "/check") || strings.HasSuffix(lowerPath, "/check") {
+		sw.WriteHeader(http.StatusOK)
+		sw.Write([]byte("OK"))
+		log.Printf("[EPISODE] Handled CHECK request successfully for: %s", r.URL.Path)
+		return
+	}
+	cleanPath := strings.TrimPrefix(r.URL.Path, "/")
+	target := filepath.Join("C:/Nintendo-Video-test-server-main", cleanPath)
+
+	log.Printf("[EPISODE] Looking for file on disk: %s", target)
+
+	info, err := os.Stat(target)
+	if os.IsNotExist(err) {
+		log.Printf("[EPISODE ERROR] File not found on disk: %s", target)
+		http.Error(sw, "File not found", http.StatusNotFound)
+		return
+	}
+
+	sw.Header().Set("Content-Type", "application/octet-stream")
+	sw.Header().Set("Content-Length", fmt.Sprintf("%d", info.Size()))
+	sw.Header().Set("Accept-Ranges", "bytes")
+	sw.Header().Set("X-Organization", "Nintendo")
+
+	http.ServeFile(sw, r, target)
+	log.Printf("[EPISODE] Finished serving %s with HTTP Status: %d", cleanPath, sw.status)
 }
 func handleLogUpload(w http.ResponseWriter, r *http.Request) {
 	logRequestDetails("LOG-UPLOAD", r)
@@ -102,9 +138,15 @@ func handleLogUpload(w http.ResponseWriter, r *http.Request) {
 func Boss_Recv(w http.ResponseWriter, r *http.Request) {
 	logRequestDetails("BOSS-RECV", r)
 
+	if strings.HasSuffix(r.URL.Path, "/sendcfg") {
+		body, err := io.ReadAll(r.Body)
+		if err == nil && len(body) > 0 {
+			log.Printf("[SENDCFG] Received config payload size: %d bytes", len(body))
+		}
+	}
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("X-Organization", "Nintendo")
-	w.Header().Set("Connection", "close")
+	// w.Header().Set("Connection", "close")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("OK"))
 }
@@ -126,7 +168,6 @@ func handleUnknown(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("404 Not Found"))
 }
 
-// Shared helper function to log header details
 func logRequestDetails(tag string, r *http.Request) {
 	log.Printf("[%s] %s %s from %s", tag, r.Method, r.URL.Path, r.RemoteAddr)
 	log.Printf("[%s] User-Agent: %s", tag, r.UserAgent())
