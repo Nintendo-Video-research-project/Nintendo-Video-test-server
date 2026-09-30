@@ -1,7 +1,7 @@
 import ipaddress
 from mitmproxy import dns, ctx
 
-LOCAL = "95.217.72.119"
+LOCAL = "[IP_REDACTED]"
 # Critical domains to be spoofed
 domains = {
     "axing.nintendowifi.net": LOCAL,
