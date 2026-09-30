@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<policylist version="1">
+    <title id="000400000004AA00">
+        <task id="ESE_MD1">
+            <url>https://video.mariocube.com/1/1/1/ESE_MD1</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>1</priority>
+            <opt_out>false</opt_out>
+        </task>
+        <task id="ESE_MD2">
+            <url>https://video.mariocube.com/1/1/1/ESE_MD2</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>2</priority>
+            <opt_out>false</opt_out>
+        </task>
+        <task id="ESE_MD3">
+            <url>https://video.mariocube.com/1/1/1/ESE_MD3</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>3</priority>
+            <opt_out>false</opt_out>
+        </task>
+        <task id="ESE_MD4">
+            <url>https://video.mariocube.com/1/1/1/ESE_MD4</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>4</priority>
+            <opt_out>false</opt_out>
+        </task>
+    </title>
+    <title id="000400000004AB00">
+        <task id="ESP_MD1">
+            <url>https://video.mariocube.com/1/1/1/ESP_MD1</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>1</priority>
+            <opt_out>false</opt_out>
+        </task>
+        <task id="ESP_MD2">
+            <url>https://video.mariocube.com/1/1/1/ESP_MD2</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>2</priority>
+            <opt_out>false</opt_out>
+        </task>
+        <task id="ESP_MD3">
+            <url>https://video.mariocube.com/1/1/1/ESP_MD3</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>3</priority>
+            <opt_out>false</opt_out>
+        </task>
+        <task id="ESP_MD4">
+            <url>https://video.mariocube.com/1/1/1/ESP_MD4</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>4</priority>
+            <opt_out>false</opt_out>
+        </task>
+        <task id="EWP_MD1">
+            <url>https://video.mariocube.com/1/1/1/EWP_MD1</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>1</priority>
+            <opt_out>false</opt_out>
+        </task>
+        <task id="EWP_MD2">
+            <url>https://video.mariocube.com/1/1/1/EWP_MD2</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>2</priority>
+            <opt_out>false</opt_out>
+        </task>
+        <task id="EWP_MD3">
+            <url>https://video.mariocube.com/1/1/1/EWP_MD3</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>3</priority>
+            <opt_out>false</opt_out>
+        </task>
+        <task id="EWP_MD4">
+            <url>https://video.mariocube.com/1/1/1/EWP_MD4</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>4</priority>
+            <opt_out>false</opt_out>
+        </task>
+    </title>
+    <title id="000400000004A900">
+        <task id="ESJ_MD1">
+            <url>https://video.mariocube.com/1/1/1/ESJ_MD1</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>1</priority>
+            <opt_out>false</opt_out>
+        </task>
+        <task id="ESJ_MD2">
+            <url>https://video.mariocube.com/1/1/1/ESJ_MD2</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>2</priority>
+            <opt_out>false</opt_out>
+        </task>
+        <task id="ESJ_MD3">
+            <url>https://video.mariocube.com/1/1/1/ESJ_MD3</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>3</priority>
+            <opt_out>false</opt_out>
+        </task>
+        <task id="ESJ_MD4">
+            <url>https://video.mariocube.com/1/1/1/ESJ_MD4</url>
+            <interval>1</interval>
+            <retry_interval>10</retry_interval>
+            <priority>4</priority>
+            <opt_out>false</opt_out>
+        </task>
+    </title>
+</policylist>
